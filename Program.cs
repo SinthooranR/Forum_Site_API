@@ -1,4 +1,5 @@
 using Forum_Application_API;
+using Microsoft.Extensions.Hosting.Internal;
 using Forum_Application_API.Data;
 using Forum_Application_API.Interfaces;
 using Forum_Application_API.Methods;
@@ -7,7 +8,7 @@ using Forum_Application_API.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Hosting.Internal;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,8 +65,18 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EF_API v1"));
+
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EF_API v1"));
+}
 
 app.UseCors();
 
