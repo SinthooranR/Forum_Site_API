@@ -101,7 +101,7 @@ namespace Forum_Application_API.Controllers
                 return BadRequest(ModelState);
 
             var commentMap = _mapper.Map<Comment>(commentCreate);
-            commentMap.CreatedDate = DateTime.Now;
+            commentMap.CreatedDate = DateTime.UtcNow;
 
             var user = _userInterface.GetUser(userId);
 
@@ -162,7 +162,7 @@ namespace Forum_Application_API.Controllers
             var commentMap = _mapper.Map<Comment>(updatedComment);
             commentMap.UserId = userId;
             commentMap.ThreadId = threadId;
-            commentMap.CreatedDate = DateTime.Now;
+            commentMap.CreatedDate = DateTime.UtcNow;
 
             if (!_commentInterface.UpdateComment(commentMap))
             {

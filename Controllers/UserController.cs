@@ -120,7 +120,7 @@ namespace Forum_Application_API.Controllers
                 Email = userCreate.Email,
                 FirstName = userCreate.FirstName,
                 LastName = userCreate.LastName,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.UtcNow
         };
         
             var result = await _userManager.CreateAsync(userMap, userCreate.Password);
@@ -201,6 +201,7 @@ namespace Forum_Application_API.Controllers
             {
                 user.FirstName = updatedUser.FirstName;
                 user.LastName = updatedUser.LastName;
+                user.CreatedDate = DateTime.UtcNow;
 
                 var result = await _userManager.UpdateAsync(user);
 

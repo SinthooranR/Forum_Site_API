@@ -124,7 +124,7 @@ namespace Forum_Application_API.Controllers
             }
 
             threadMap.User = _userInterface.GetUser(userId);
-            threadMap.CreatedDate = DateTime.Now;
+            threadMap.CreatedDate = DateTime.UtcNow;
 
 
             if (!_threadInterface.CreateThread(threadMap))
@@ -155,6 +155,7 @@ namespace Forum_Application_API.Controllers
 
             var threadMap = _mapper.Map<ForumThread>(updatedThread);
             threadMap.UserId = userId;
+            threadMap.CreatedDate = DateTime.UtcNow;
 
             if (!_threadInterface.UpdateThread(userId, threadMap))
             {
