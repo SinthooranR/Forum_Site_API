@@ -153,6 +153,19 @@ namespace Forum_Application_API.Controllers
         }
 
 
+        [HttpOptions("login")] // Handle OPTIONS requests for the login endpoint
+        public IActionResult HandleOptions()
+        {
+            // Respond with CORS headers for the preflight request
+            Response.Headers.Add("Access-Control-Allow-Origin", _environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-sinthooranr.vercel.app");
+            Response.Headers.Add("Access-Control-Allow-Methods", "POST");
+            Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+
+            return Ok();
+        }
+
+
         [HttpPost("login")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -189,8 +202,6 @@ namespace Forum_Application_API.Controllers
                 Path = "/",
                 Domain = _environment.IsDevelopment() ? "localhost" : "forumapp20239981.azurewebsites.net"
             });
-
-
 
             return Ok("Logged In Successfully");
         }
