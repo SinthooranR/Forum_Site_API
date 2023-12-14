@@ -183,7 +183,6 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None, // or SameSiteMode.Strict
                 Secure = true,
                 Path = "/",
-                Domain = "localhost", // adjust as needed
             });
 
             return Ok("Logged In Successfully");
