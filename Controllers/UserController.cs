@@ -5,6 +5,7 @@ using Forum_Application_API.Methods;
 using Forum_Application_API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace Forum_Application_API.Controllers
 {
@@ -30,7 +31,7 @@ namespace Forum_Application_API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+       /* [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         public IActionResult GetUsers()
         {
@@ -41,7 +42,7 @@ namespace Forum_Application_API.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(users);
-        }
+        }*/
 
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(User))]
@@ -56,14 +57,17 @@ namespace Forum_Application_API.Controllers
             }
 
             var user = _mapper.Map<User>(_userInterface.GetUser(userId));
-            user.Threads = _threadInterface.GetThreadsByUser(userId);
-            user.Comments = _commentInterface.GetCommentsByUser(userId);
+            var threads = _threadInterface.GetThreadsByUser(userId);
+            var comments = _commentInterface.GetCommentsByThread(userId);
+            var newUser = _mapper.Map<SecureUserDto>(user);
+            newUser.Threads = threads.Select(thread => _mapper.Map<UserForumDto>(thread)).ToList();
+            newUser.Comments = comments.Select(comment => _mapper.Map<UserCommentDto>(comment)).ToList();
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(user);
+            return Ok(newUser);
         }
 
 

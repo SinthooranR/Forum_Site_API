@@ -24,7 +24,7 @@ namespace Forum_Application_API.Controllers
             _userInterface = userInterface;
             _mapper = mapper;
         }
-
+ /*
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Comment>))]
         public IActionResult GetComments()
@@ -36,7 +36,7 @@ namespace Forum_Application_API.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(comments);
-        }
+        }*/
 
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(User))]
@@ -52,8 +52,17 @@ namespace Forum_Application_API.Controllers
             var comments = _mapper.Map<List<Comment>>(_commentInterface.GetCommentsByUser(userId));
             var updatedComments = comments.Select(comment =>
             {
-                comment.User = _userInterface.GetUser(comment.UserId);
-                return comment;
+                var user = _userInterface.GetUser(comment.UserId);
+                var userCommentDto = new UserCommentDto
+                {
+                    Id = comment.Id,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate,
+                    ThreadId = comment.ThreadId,
+                    UserId = comment.Id,
+                    User = _mapper.Map<SecureUserDto>(user),
+                };
+                return userCommentDto;
             });
 
             if (!ModelState.IsValid)
@@ -77,8 +86,18 @@ namespace Forum_Application_API.Controllers
             var comments = _mapper.Map<List<Comment>>(_commentInterface.GetCommentsByThread(threadId));
             var updatedComments = comments.Select(comment =>
             {
-                comment.User = _userInterface.GetUser(comment.UserId);
-                return comment;
+                var user = _userInterface.GetUser(comment.UserId);
+                var userCommentDto = new UserCommentDto
+                {
+                    Id = comment.Id,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate,
+                    ThreadId = comment.ThreadId,
+                    UserId = comment.UserId,
+                    User = _mapper.Map<SecureUserDto>(user),
+
+                };
+                return userCommentDto;
             });
 
             if (!ModelState.IsValid)

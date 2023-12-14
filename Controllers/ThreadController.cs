@@ -4,6 +4,7 @@ using Forum_Application_API.Interfaces;
 using Forum_Application_API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace Forum_Application_API.Controllers
 {
@@ -30,13 +31,24 @@ namespace Forum_Application_API.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ForumThread>))]
         public IActionResult GetThreads()
         {
+
             var threads = _mapper.Map<List<ForumThread>>(_threadInterface.GetThreads());
 
             var updatedThreads = threads.Select(thread =>
             {
-                thread.User = _userInterface.GetUser(thread.UserId);
-                thread.Comments = _commentInterface.GetCommentsByThread(thread.Id);
-                return thread;
+                var user = _userInterface.GetUser(thread.UserId);
+                var comments = _commentInterface.GetCommentsByThread(thread.Id);
+
+                var userForumDto = new UserForumDto
+                {
+                    Id = thread.Id,
+                    Title = thread.Title,
+                    Description = thread.Description,
+                    CreatedDate = thread.CreatedDate,
+                    User = _mapper.Map<SecureUserDto>(user),
+                    Comments = comments.Select(comment => _mapper.Map<UserCommentDto>(comment)).ToList()
+                };
+                return userForumDto;
             });
 
             if (!ModelState.IsValid)
@@ -57,21 +69,25 @@ namespace Forum_Application_API.Controllers
                 return NotFound();
             }
 
-            var thread = _mapper.Map<ForumThread>(_threadInterface.GetThread(threadId));
+            var thread = _threadInterface.GetThread(threadId);
+            var user = _userInterface.GetUser(thread.UserId);
+            var newThread = _mapper.Map<UserForumDto>(thread);
+            var comments = _commentInterface.GetCommentsByThread(thread.Id);
 
-            thread.User = _userInterface.GetUser(thread.UserId);
-            thread.Comments = _commentInterface.GetCommentsByThread(thread.Id);
+            newThread.User = _mapper.Map<SecureUserDto>(user);
+            newThread.Comments = comments.Select(comment => _mapper.Map<UserCommentDto>(comment)).ToList();
 
-            foreach (var comment in thread.Comments)
+            foreach (var comment in newThread.Comments)
             {
-                comment.User = _userInterface.GetUser(comment.UserId);
+                var commentUser = _userInterface.GetUser(comment.UserId);
+                comment.User = _mapper.Map<SecureUserDto>(commentUser);
             }
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(thread);
+            return Ok(newThread);
         }
 
         [HttpGet("user/{userId}")]
@@ -88,9 +104,19 @@ namespace Forum_Application_API.Controllers
             var threads = _mapper.Map<List<ForumThread>>(_threadInterface.GetThreadsByUser(userId));
             var updatedThreads = threads.Select(thread =>
             {
-                thread.User = _userInterface.GetUser(thread.UserId);
-                thread.Comments = _commentInterface.GetCommentsByThread(thread.Id);
-                return thread;
+                var user = _userInterface.GetUser(thread.UserId);
+                var comments = _commentInterface.GetCommentsByThread(thread.Id);
+
+                var userForumDto = new UserForumDto
+                {
+                    Id = thread.Id,
+                    Title = thread.Title,
+                    Description = thread.Description,
+                    CreatedDate = thread.CreatedDate,
+                    User = _mapper.Map<SecureUserDto>(user),
+                    Comments = comments.Select(comment => _mapper.Map<UserCommentDto>(comment)).ToList()
+                };
+                return userForumDto;
             });
 
             if (!ModelState.IsValid)
