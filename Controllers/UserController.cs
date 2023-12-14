@@ -177,15 +177,16 @@ namespace Forum_Application_API.Controllers
 
             var token = _jwtGenerator.GenerateToken(user);
 
-        // Set HttpOnly cookie
-        Response.Cookies.Append("token", token, new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            Path = "/"
-        });
+            // Set HttpOnly cookie
+            Response.Cookies.Append("token", token, new CookieOptions
+            {
+                SameSite = SameSiteMode.None, // or SameSiteMode.Strict
+                Secure = true,
+                Path = "/",
+                Domain = "localhost", // adjust as needed
+            });
 
-            return Ok(new { Token = token });
+            return Ok("Logged In Successfully");
         }
 
 

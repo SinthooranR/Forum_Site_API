@@ -8,6 +8,7 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public string Email { get; set; }
         public ICollection<UserForumDto> Threads { get; set; }
         public ICollection<UserCommentDto> Comments { get; set; }
     }
