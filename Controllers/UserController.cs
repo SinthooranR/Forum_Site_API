@@ -180,7 +180,7 @@ namespace Forum_Application_API.Controllers
             // Set HttpOnly cookie
             Response.Cookies.Append("token", token, new CookieOptions
             {
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.Lax,
                 Secure = true,
                 Path = "/",
             });
