@@ -22,11 +22,13 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+string corsUrl = builder.Environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-sinthooranr.vercel.app";
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:3000")
+        builder.WithOrigins(corsUrl)
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials();
