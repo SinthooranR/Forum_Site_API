@@ -3,8 +3,10 @@ using Forum_Application_API.Dto;
 using Forum_Application_API.Interfaces;
 using Forum_Application_API.Methods;
 using Forum_Application_API.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Xml.Linq;
 
 namespace Forum_Application_API.Controllers
@@ -20,7 +22,8 @@ namespace Forum_Application_API.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly JwtGenerator _jwtGenerator;
         private readonly IMapper _mapper;
-        public UserController(IUserInterface userInterface, IThreadInterface threadInterface, ICommentInterface commentInterface, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, JwtGenerator jwtGenerator)
+        private readonly IHostEnvironment _environment;
+        public UserController(IUserInterface userInterface, IThreadInterface threadInterface, ICommentInterface commentInterface, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, JwtGenerator jwtGenerator, IHostEnvironment environment)
         {
             _userInterface = userInterface;
             _threadInterface = threadInterface;
@@ -29,6 +32,7 @@ namespace Forum_Application_API.Controllers
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _mapper = mapper;
+            _environment = environment;
         }
 
        /* [HttpGet]
@@ -183,7 +187,10 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
+                Domain = _environment.IsDevelopment() ? "localhost" : "forum-site-sinthooranr.vercel.app"
             });
+
+
 
             return Ok("Logged In Successfully");
         }
