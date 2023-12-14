@@ -187,7 +187,7 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
-                Domain = _environment.IsDevelopment() ? "localhost" : "forum-site-sinthooranr.vercel.app"
+                Domain = _environment.IsDevelopment() ? "localhost" : "forumapp20239981.azurewebsites.net"
             });
 
 
