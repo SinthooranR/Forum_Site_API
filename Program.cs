@@ -22,7 +22,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-string corsUrl = builder.Environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-two.vercel.app";
+string corsUrl = builder.Environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-sinthooranr.vercel.app";
 
 builder.Services.AddCors(options =>
 {
