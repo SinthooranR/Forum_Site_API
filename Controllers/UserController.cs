@@ -200,7 +200,7 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
-                Domain = _environment.IsDevelopment() ? "localhost" : "forumapp20239981.azurewebsites.net"
+                Domain = _environment.IsDevelopment() ? "localhost" : ".forumapp20239981.azurewebsites.net"
             });
 
             return Ok("Logged In Successfully");
