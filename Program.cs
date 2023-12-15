@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins(corsUrl)
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials();
@@ -81,9 +81,9 @@ else
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EF_API v1"));
 }
 
-app.UseCors("AllowOrigin");
-
 app.UseHttpsRedirection();
+
+app.UseCors("AllowOrigin");
 
 app.UseAuthorization();
 

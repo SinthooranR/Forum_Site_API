@@ -3,12 +3,9 @@ using Forum_Application_API.Dto;
 using Forum_Application_API.Interfaces;
 using Forum_Application_API.Methods;
 using Forum_Application_API.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Xml.Linq;
 
 namespace Forum_Application_API.Controllers
 {
@@ -152,20 +149,6 @@ namespace Forum_Application_API.Controllers
 
 
         }
-
-        [EnableCors("AllowOrigin")]
-        [HttpOptions("login")] // Handle OPTIONS requests for the login endpoint
-        public IActionResult HandleOptions()
-        {
-            // Respond with CORS headers for the preflight request
-            Response.Headers.Add("Access-Control-Allow-Origin", _environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-sinthooranr.vercel.app");
-            Response.Headers.Add("Access-Control-Allow-Methods", "POST");
-            Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            Response.Headers.Add("Access-Control-Allow-Credentials", "true");
-
-            return Ok();
-        }
-
 
         [HttpPost("login")]
         [ProducesResponseType(204)]
