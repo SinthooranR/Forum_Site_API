@@ -184,6 +184,7 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
+                IsEssential = true
             });
 
             return Ok(new { Token = token });
