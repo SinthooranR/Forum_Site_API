@@ -3,6 +3,7 @@ using Forum_Application_API.Dto;
 using Forum_Application_API.Interfaces;
 using Forum_Application_API.Methods;
 using Forum_Application_API.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -152,7 +153,7 @@ namespace Forum_Application_API.Controllers
 
         }
 
-
+        [EnableCors("AllowOrigin")]
         [HttpOptions("login")] // Handle OPTIONS requests for the login endpoint
         public IActionResult HandleOptions()
         {
@@ -200,7 +201,7 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
-                Domain = _environment.IsDevelopment() ? "localhost" : ".forumapp20239981.azurewebsites.net"
+                Domain = _environment.IsDevelopment() ? "localhost" : "forumapp20239981.azurewebsites.net"
             });
 
             return Ok("Logged In Successfully");
