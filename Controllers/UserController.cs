@@ -60,7 +60,7 @@ namespace Forum_Application_API.Controllers
 
             var user = _mapper.Map<User>(_userInterface.GetUser(userId));
             var threads = _threadInterface.GetThreadsByUser(userId);
-            var comments = _commentInterface.GetCommentsByThread(userId);
+            var comments = _commentInterface.GetCommentsByUser(userId);
             var newUser = _mapper.Map<SecureUserDto>(user);
             newUser.Threads = threads.Select(thread => _mapper.Map<UserForumDto>(thread)).ToList();
             newUser.Comments = comments.Select(comment => _mapper.Map<UserCommentDto>(comment)).ToList();
