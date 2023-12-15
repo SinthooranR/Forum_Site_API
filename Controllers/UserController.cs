@@ -184,14 +184,9 @@ namespace Forum_Application_API.Controllers
                 SameSite = SameSiteMode.None,
                 Secure = true,
                 Path = "/",
-                Domain = _environment.IsDevelopment() ? "localhost" : "forumapp20239981.azurewebsites.net"
             });
 
-            // Add CORS headers
-            Response.Headers.Add("Access-Control-Allow-Origin", _environment.IsDevelopment() ? "http://localhost:3000" : "https://forum-site-sinthooranr.vercel.app");
-            Response.Headers.Add("Access-Control-Allow-Credentials", "true");
-
-            return Ok("Logged In Successfully");
+            return Ok(new { Token = token });
         }
 
 
